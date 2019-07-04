@@ -1,0 +1,61 @@
+// gradle clean build
+
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+ 
+dependencies {
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+String releaseFileName = "minhash-1.zip"
+
+jar { 
+    manifest { 
+        attributes 'Main-Class': 'id.minhash.MinhashApp'
+    }
+}
+
+task packageDistribution(type: Zip) {
+    archiveFileName = releaseFileName
+    destinationDirectory = file("$projectDir/release")
+    from file("$projectDir/release/minhash")
+}
+
+task createRelease() {
+    def out = 'release/minhash/minhash'
+    copy {
+        from jar.archiveFile
+        into out
+    }
+    copy {
+        from "$projectDir/README.md"
+        into out
+    }
+    copy {
+        from "$projectDir/src/minhash"
+        into out
+    }
+}
+
+packageDistribution.dependsOn createRelease
+assemble.dependsOn packageDistribution
+
+task copyReadme(type: Copy) {
+    from("$projectDir/README.md")
+    into("$projectDir/src/main/resources")
+}
+
+compileJava.dependsOn copyReadme
