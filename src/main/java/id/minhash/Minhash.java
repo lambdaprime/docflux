@@ -46,6 +46,7 @@ public class Minhash {
     }
 
     public void add(String str) {
+        if (str.isEmpty()) return;
         for (int i = 0; i < hashvalues.length; i++) {
             long a = permA[i];
             long b = permB[i];

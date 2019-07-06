@@ -25,7 +25,6 @@ public class MinhashAppTest {
     public void setup() {
         baos = new ByteArrayOutputStream();
         MinhashApp.out = new PrintStream(baos);
-        System.out.println("s");
     }
 
     @Test
@@ -87,6 +86,23 @@ public class MinhashAppTest {
         out.forEach(System.out::println);
         assertEquals(1, out.size());
         assertEquals(128, out.get(0).split(" ").length);
+    }
+
+    @Test
+    public void test_ignore_whitespaces() throws Exception {
+        MinhashApp.main(new String[] {
+            "-s", "123", "test1 test2"
+        });
+        List<String> out1 = output();
+        out1.forEach(System.out::println);
+        baos.reset();
+        MinhashApp.main(new String[] {
+            "-s", "123", "test1     test2"
+        });
+        List<String> out2 = output();
+        out2.forEach(System.out::println);
+
+        assertEquals(out1, out2);
     }
 
     private List<String> testSeed(String absolutePath, long s) throws Exception {

@@ -2,6 +2,10 @@
 
 lambdaprime <id.blackmesa@gmail.com>
 
+# Download
+
+You can download **minhash** from https://github.com/lambdaprime/minhash/tree/master/release
+
 # Requirements
 
 Java 11
