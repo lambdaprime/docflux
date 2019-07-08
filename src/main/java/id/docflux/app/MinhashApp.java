@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -43,14 +42,6 @@ public class MinhashApp {
         return true;
     };
 
-    @SuppressWarnings("resource")
-    private static void usage() throws IOException {
-        Scanner scanner = new Scanner(MinhashApp.class.getResource("/README.md").openStream())
-                .useDelimiter("\n");
-        while (scanner.hasNext())
-            out.println(scanner.next());
-    }
-
     private static void calculateForLines(String fileName) throws IOException {
         Files.readAllLines(Paths.get(fileName)).stream()
             .map(Minhash::new)
@@ -81,7 +72,7 @@ public class MinhashApp {
 
     public static void main(String[] args) throws Exception {
         if (args.length < 1) {
-            usage();
+            AppUtils.usage(out);
             System.exit(1);
         }
         seed = Optional.empty();

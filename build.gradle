@@ -48,6 +48,10 @@ task createRelease() {
         from "$projectDir/src/minhash"
         into out
     }
+    copy {
+        from "$projectDir/src/distance"
+        into out
+    }
 }
 
 packageDistribution.dependsOn createRelease

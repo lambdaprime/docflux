@@ -5,10 +5,15 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toSet;
 
 public class Minhash {
     private static final int DEFAULT_LEN = 128;
@@ -16,27 +21,27 @@ public class Minhash {
     private static final int BANDSIZE = 4;
 
     private static Random rand = new Random();
-    private static int[] permA = permutations();
-    private static int[] permB = permutations();
+    private static long[] permA = permutations();
+    private static long[] permB = permutations();
 
     private static final int PRIME = 2147483647;
     private static final int MAXHASH = Integer.MAX_VALUE;
 
-    private int[] hashvalues;
+    private long[] hashvalues;
 
     private Supplier<String[]> HASH_BANDS = () -> {
         String[] hashBands = new String[hashvalues.length / BANDSIZE];
         for (int i = 0; i < hashBands.length; i++) {
             int start = i * BANDSIZE;
             int end = start + BANDSIZE;
-            int[] band = Arrays.copyOfRange(hashvalues, start, end);
+            long[] band = Arrays.copyOfRange(hashvalues, start, end);
             hashBands[i] = stream(band).mapToObj(String::valueOf).collect(joining("."));
         };
         return hashBands;
     };
 
     public Minhash() {
-        hashvalues = new int[NUMPERM];
+        hashvalues = new long[NUMPERM];
         Arrays.fill(hashvalues, MAXHASH);
     }
 
@@ -45,25 +50,36 @@ public class Minhash {
         stream(str.split(" ")).forEach(this::add);
     }
 
+    public Minhash(long[] hashvalues) {
+        this.hashvalues = hashvalues;
+    }
+
     public void add(String str) {
         if (str.isEmpty()) return;
         for (int i = 0; i < hashvalues.length; i++) {
             long a = permA[i];
             long b = permB[i];
-            int hash = (int) ((a * hash(str) + b) % PRIME);
+            long hash = (a * hash(str) + b) % PRIME;
             //System.out.println(hash);
+            if (hash < 0) throw new RuntimeException("Negative hash value");
             if (hash < hashvalues[i])
                 hashvalues[i] = hash;
         }
     }
 
-    // jaccard
     public double distance(Minhash other) {
-        double shared = 0;
-        for (int i = 0; i < hashvalues.length; i++) {
-            if (hashvalues[i] == other.hashvalues[i]) shared++;
-        }
-        return shared / (2 * hashvalues.length - shared);
+        Set<Long> s1 = Arrays.stream(hashvalues).boxed().collect(toSet());
+        Set<Long> s2 = Arrays.stream(other.hashvalues).boxed().collect(toSet());
+        double intersect = Stream.of(s1, s2)
+            .flatMap(Set::stream)
+            .collect(Collectors.groupingBy(Function.identity()))
+            .entrySet().stream()
+            .filter(e -> e.getValue().size() > 1)
+            .count();
+        double union = Stream.of(s1, s2)
+                .flatMap(Set::stream)
+                .collect(toSet()).size();
+        return intersect / union;
     }
 
     public String[] getHashBands() {
@@ -78,20 +94,20 @@ public class Minhash {
                 .collect(joining(" "));
     }
 
-    private static int[] permutations() {
-        Set<Integer> used = new HashSet<>();
+    private static long[] permutations() {
+        Set<Long> used = new HashSet<>();
         for (int j = 0; j < NUMPERM; j++) {
-            int randInt = rand.nextInt(Integer.MAX_VALUE);
+            long randInt = rand.nextInt(Integer.MAX_VALUE);
             while (used.contains(randInt))
                 randInt = rand.nextInt(Integer.MAX_VALUE);
+            if (randInt < 0) throw new RuntimeException("Negative permutation value");
             used.add(randInt);
         }
-        return used.stream().mapToInt(Integer::intValue)
+        return used.stream().mapToLong(Long::longValue)
                 .toArray();
     }
 
-    private int hash(String str) {
-        // hash code should be non negative
+    private long hash(String str) {
         return str.hashCode() & Integer.MAX_VALUE;
     }
 
