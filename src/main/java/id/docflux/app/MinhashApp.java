@@ -1,4 +1,4 @@
-package id.minhash;
+package id.docflux.app;
 
 import static java.util.stream.Collectors.joining;
 
@@ -12,6 +12,7 @@ import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import id.minhash.Minhash;
 import id.util.SmartArgs;
 
 public class MinhashApp {

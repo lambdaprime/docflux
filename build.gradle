@@ -20,22 +20,22 @@ test {
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
-String releaseFileName = "minhash-1.zip"
+String releaseFileName = "docflux-1.zip"
 
 jar { 
     manifest { 
-        attributes 'Main-Class': 'id.minhash.MinhashApp'
+        attributes 'Main-Class': 'id.docflux.app.MinhashApp'
     }
 }
 
 task packageDistribution(type: Zip) {
     archiveFileName = releaseFileName
     destinationDirectory = file("$projectDir/release")
-    from file("$projectDir/release/minhash")
+    from file("$projectDir/release/docflux")
 }
 
 task createRelease() {
-    def out = 'release/minhash/minhash'
+    def out = 'release/docflux/docflux'
     copy {
         from jar.archiveFile
         into out

@@ -1,6 +1,10 @@
-**minhash** - calculates and prints minhash for a given document or string.
+**docflux** - set of tools to process text documents.
 
 lambdaprime <id.blackmesa@gmail.com>
+
+# Download
+
+You can download **docflux** from https://github.com/lambdaprime/docflux/tree/master/release
 
 # Requirements
 
@@ -11,6 +15,8 @@ Java 11
 ```
 minhash [-s SEED] [-l LEN] [-ll] < -f DOCUMENT | STRING >
 ```
+
+Calculates and prints minhash for a given document or string.
 
 Where:
 
@@ -33,4 +39,3 @@ $
 minhash -s 12345 -l 12 -f README.md
 48223938 24762595 13952067 6693296 126283087 44141764 3302847 90096366 9747865 91669439 9593949 78664975
 ```
-

@@ -1,4 +1,4 @@
-package id.minhash;
+package id.docflux.app;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,6 +16,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import id.docflux.app.MinhashApp;
 
 public class MinhashAppTest {
 
