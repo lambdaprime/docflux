@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -23,11 +24,13 @@ public class Minhash {
     private static Random rand = new Random();
     private static long[] permA = permutations();
     private static long[] permB = permutations();
+	private static Long seed;
 
-    private static final int PRIME = 2147483647;
+    private static final int PRIME = 1019;
     private static final int MAXHASH = Integer.MAX_VALUE;
 
     private long[] hashvalues;
+    private String[] minvalues;
 
     private Supplier<String[]> HASH_BANDS = () -> {
         String[] hashBands = new String[hashvalues.length / BANDSIZE];
@@ -43,6 +46,7 @@ public class Minhash {
     public Minhash() {
         hashvalues = new long[NUMPERM];
         Arrays.fill(hashvalues, MAXHASH);
+        minvalues = new String[hashvalues.length];
     }
 
     public Minhash(String str) {
@@ -59,11 +63,13 @@ public class Minhash {
         for (int i = 0; i < hashvalues.length; i++) {
             long a = permA[i];
             long b = permB[i];
-            long hash = (a * hash(str) + b) % PRIME;
+            long hash = (a * fingerprint(str) + b) % PRIME;
             //System.out.println(hash);
             if (hash < 0) throw new RuntimeException("Negative hash value");
-            if (hash < hashvalues[i])
+            if (hash < hashvalues[i]) {
                 hashvalues[i] = hash;
+                minvalues[i] = str;
+            }
         }
     }
 
@@ -86,12 +92,26 @@ public class Minhash {
         return HASH_BANDS.get();
     }
 
+    public String[] getMinValues() {
+		return minvalues;
+	}
+
     @Override
     public String toString() {
         return stream(hashvalues)
                 .boxed()
                 .map(i -> "" + i)
                 .collect(joining(" "));
+    }
+
+    public String dump() {
+    	var v = stream(minvalues).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    	var buf = new StringBuilder();
+    	Consumer<String> appendLine = str -> buf.append(str).append("\n");
+    	appendLine.accept("seed: " + seed);
+    	appendLine.accept(v.toString());
+    	appendLine.accept(toString());
+        return buf.toString();
     }
 
     private static long[] permutations() {
@@ -107,8 +127,12 @@ public class Minhash {
                 .toArray();
     }
 
-    private long hash(String str) {
-        return str.hashCode() & Integer.MAX_VALUE;
+    private long fingerprint(String str) {
+    	long h = 0;
+        for (int i = 0; i < str.length(); i++) {
+            h = 31 * h + str.charAt(i);
+        }
+        return h & Integer.MAX_VALUE;
     }
 
     static void reset() {
@@ -118,6 +142,7 @@ public class Minhash {
 
     public static void init(Optional<Long> seed, Optional<Integer> len) {
         NUMPERM = len.orElse(DEFAULT_LEN);
+        Minhash.seed = seed.orElse(null); 
         rand = seed.isEmpty()? new Random(): new Random(seed.get());
         permA = permutations();
         permB = permutations();
