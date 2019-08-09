@@ -34,28 +34,25 @@ task packageDistribution(type: Zip) {
     from file("$projectDir/release/docflux")
 }
 
-task createRelease() {
+task createRelease(type: Copy) {
     def out = 'release/docflux/docflux'
-    copy {
-        from jar.archiveFile
-        into out
-    }
-    copy {
-        from "$projectDir/README.md"
-        into out
-    }
-    copy {
-        from "$projectDir/src/minhash"
-        into out
-    }
-    copy {
-        from "$projectDir/src/distance"
-        into out
-    }
+    from jar.archiveFile
+    into out
+    from "$projectDir/README.md"
+    into out
+    from "$projectDir/src/minhash"
+    into out
+    from "$projectDir/src/distance"
+    into out
+}
+
+task cleanRelease(type: Delete) {
+    delete "$projectDir/release"
 }
 
 packageDistribution.dependsOn createRelease
 assemble.dependsOn packageDistribution
+clean.dependsOn cleanRelease
 
 task copyReadme(type: Copy) {
     from("$projectDir/README.md")
