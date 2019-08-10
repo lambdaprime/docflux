@@ -30,14 +30,19 @@ Options:
 * -ll -- calculate minhash for each line of the document
 
 ```
-distance < SET > < SET >
+distance [ --minhash OPTIONS_STRING ] < SET1 > < SET2 >
 ```
 
 Calculates Jaccard similarity distance between two sets. As sets you can use previously calculated minhashes.
 
 Where:
 
-* SET -- set of numbers of words
+* SETN -- set of numbers of words
+* OPTIONS_STRING -- string of options which will be passed to minhash command or empty string "" if none (see examples). In case of empty string the default seed will be used for each minhash.
+
+Options:
+
+* --minhash -- turns on minhash mode when distance is calculated not between the input SETs but between their minhashes
 
 # Examples
 
@@ -54,4 +59,10 @@ minhash -s 12345 -l 12 -f README.md
 $
 distance "844891981 475746331 1024964782 470279604 592399321 341907980 544233204 271350935 236247775 414750817 25601593 1304639739" "844891981 179079962 1024964782 470279604 592399321 287362302 1277087821 162046433 236247775 414750817 25601593 1304639739"
 0.5
+$
+distance --minhash "" "Good morning" "Good evening"
+0.19069767441860466
+$
+distance --minhash "-s 123" "Good morning" "Good evening"
+0.24271844660194175
 ```

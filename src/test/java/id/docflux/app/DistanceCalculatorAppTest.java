@@ -1,6 +1,7 @@
 package id.docflux.app;
 
 import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.BufferedReader;
@@ -51,6 +52,36 @@ public class DistanceCalculatorAppTest {
         List<String> out = output();
         out.forEach(System.out::println);
         assertEquals("1.0", out.get(0));
+    }
+
+    @Test
+    public void test_default_seed() throws Exception {
+        DistanceCalculatorApp.main(new String[] {
+            "--minhash", "", "1 2 1 1", "2 1 1 1"
+        });
+        List<String> out = output();
+        out.forEach(System.out::println);
+        assertEquals("1.0", out.get(0));
+    }
+
+    @Test
+    public void test_different_minhash_default() throws Exception {
+        DistanceCalculatorApp.main(new String[] {
+            "--minhash", "", "one two", "one three"
+        });
+        List<String> out = output();
+        out.forEach(System.out::println);
+        assertTrue(0.1 < Double.parseDouble(out.get(0)));
+    }
+
+    @Test
+    public void test_different_minhash() throws Exception {
+        DistanceCalculatorApp.main(new String[] {
+            "--minhash", "-l 5 -s 123", "one two", "one three"
+        });
+        List<String> out = output();
+        out.forEach(System.out::println);
+        assertEquals("0.1111111111111111", out.get(0));
     }
 
     private List<String> output() {

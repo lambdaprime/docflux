@@ -26,7 +26,7 @@ public class Minhash {
     private static long[] permB = permutations();
 	private static Long seed;
 
-    private static final int PRIME = 1019;
+    private static final int PRIME = 2147483647;
     private static final int MAXHASH = Integer.MAX_VALUE;
 
     private long[] hashvalues;
@@ -76,16 +76,7 @@ public class Minhash {
     public double distance(Minhash other) {
         Set<Long> s1 = Arrays.stream(hashvalues).boxed().collect(toSet());
         Set<Long> s2 = Arrays.stream(other.hashvalues).boxed().collect(toSet());
-        double intersect = Stream.of(s1, s2)
-            .flatMap(Set::stream)
-            .collect(Collectors.groupingBy(Function.identity()))
-            .entrySet().stream()
-            .filter(e -> e.getValue().size() > 1)
-            .count();
-        double union = Stream.of(s1, s2)
-                .flatMap(Set::stream)
-                .collect(toSet()).size();
-        return intersect / union;
+        return DistanceCalculator.jaccard(s1, s2);
     }
 
     public String[] getHashBands() {
