@@ -21,6 +21,7 @@ public class MinhashTest {
 	        Minhash m = new Minhash("there is no spoon");
 	        String dump = m.dump();
 	        System.out.println(dump);
+	        System.out.println(m);
 			assertTrue(dump.contains("there"));
 			assertTrue(dump.contains("is"));
 			assertTrue(dump.contains("no"));
@@ -36,6 +37,7 @@ public class MinhashTest {
 	        Minhash m = new Minhash("All those moments will be lost in time, like tears in rain.");
 	        String dump = m.dump();
 	        System.out.println(dump);
+	        System.out.println(m);
 	        Matcher matcher = Pattern.compile("=(\\d+)").matcher(dump);
 	        boolean exceed = matcher.results()
 	        	.map(r -> r.group(1))

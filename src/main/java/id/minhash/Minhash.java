@@ -26,7 +26,7 @@ public class Minhash {
     private static long[] permB = permutations();
 	private static Long seed;
 
-    private static final int PRIME = 2147483647;
+    private static final int PRIME = 1024;//2147483647;
     private static final int MAXHASH = Integer.MAX_VALUE;
 
     private long[] hashvalues;
@@ -101,7 +101,6 @@ public class Minhash {
     	Consumer<String> appendLine = str -> buf.append(str).append("\n");
     	appendLine.accept("seed: " + seed);
     	appendLine.accept(v.toString());
-    	appendLine.accept(toString());
         return buf.toString();
     }
 

@@ -13,7 +13,7 @@ Java 11
 # Usage
 
 ```
-minhash [-s SEED] [-l LEN] [-ll] < -f DOCUMENT | STRING >
+minhash [-s SEED] [-l LEN] [-ll] [-dump] < -f DOCUMENT | STRING >
 ```
 
 Calculates and prints minhash for a given document or string.
@@ -28,6 +28,7 @@ Options:
 * -s SEED -- set seed value (default seed is taken randomly each time you run the application)
 * -l LEN -- length of the minhash (default 128)
 * -ll -- calculate minhash for each line of the document
+* -dump -- shows minhash details
 
 ```
 distance [ --minhash OPTIONS_STRING ] < SET1 > < SET2 >

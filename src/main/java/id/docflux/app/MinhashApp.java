@@ -21,6 +21,7 @@ public class MinhashApp {
     private Optional<Integer> length = Optional.empty();
     private Optional<Long> seed = Optional.empty();
     private boolean perLine;
+    private boolean showDump;
 
     static PrintStream out = System.out;
 
@@ -33,6 +34,10 @@ public class MinhashApp {
         switch(arg) {
         case "-ll": {
             perLine = true;
+            break;
+        }
+        case "-dump": {
+            showDump = true;
             break;
         }
         default: {
@@ -67,7 +72,10 @@ public class MinhashApp {
     }
 
     private void processString(String str) {
-        out.println(new Minhash(str));
+        var mh = new Minhash(str);
+        if (showDump)
+            System.out.println(mh.dump());
+        out.println(mh);
     }
 
     private void runMain(String[] args) throws Exception {
