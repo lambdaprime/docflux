@@ -17,7 +17,8 @@ public class MinhashTest {
     public void test_minwise() throws Exception {
     	Random rand = new Random();
     	IntStream.range(0, 100).forEach(i -> {
-	    	Minhash.init(Optional.of((long)rand.nextInt(Integer.MAX_VALUE)), Optional.of(32));
+	    	Minhash.init(Optional.of((long)rand.nextInt(Integer.MAX_VALUE)), Optional.of(32),
+	    	    Optional.empty());
 	        Minhash m = new Minhash("there is no spoon");
 	        String dump = m.dump();
 	        System.out.println(dump);
@@ -33,7 +34,8 @@ public class MinhashTest {
     public void test_distribution() throws Exception {
     	Random rand = new Random();
     	IntStream.range(0, 100).forEach(t -> {
-	    	Minhash.init(Optional.of((long)rand.nextInt(Integer.MAX_VALUE)), Optional.of(32));
+	    	Minhash.init(Optional.of((long)rand.nextInt(Integer.MAX_VALUE)), Optional.of(32),
+	    	    Optional.empty());
 	        Minhash m = new Minhash("All those moments will be lost in time, like tears in rain.");
 	        String dump = m.dump();
 	        System.out.println(dump);

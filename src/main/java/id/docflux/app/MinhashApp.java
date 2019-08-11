@@ -20,6 +20,7 @@ public class MinhashApp {
     private Optional<String> string = Optional.empty();
     private Optional<Integer> length = Optional.empty();
     private Optional<Long> seed = Optional.empty();
+    private Optional<Integer> max = Optional.empty();
     private boolean perLine;
     private boolean showDump;
 
@@ -28,6 +29,7 @@ public class MinhashApp {
     private final Map<String, Consumer<String>> handlers = Map.of(
         "-s", arg -> seed = Optional.of(Long.valueOf(arg)),
         "-l", arg -> length = Optional.of(Integer.valueOf(arg)),
+        "-m", arg -> max = Optional.of(Integer.valueOf(arg)),
         "-f", arg -> fileName = Optional.of(arg)
     );
     private final Function<String, Boolean> defaultHandler = arg -> {
@@ -80,7 +82,7 @@ public class MinhashApp {
 
     private void runMain(String[] args) throws Exception {
         new SmartArgs(handlers, defaultHandler).parse(args);
-        Minhash.init(seed, length);
+        Minhash.init(seed, length, max);
         fileName.ifPresent(this::processFile);
         string.ifPresent(this::processString);
     }

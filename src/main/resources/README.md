@@ -27,6 +27,7 @@ Options:
 
 * -s SEED -- set seed value (default seed is taken randomly each time you run the application)
 * -l LEN -- length of the minhash (default 128)
+* -m MAX -- maximum values in minhash (needs to be prime, default 2147483647)
 * -ll -- calculate minhash for each line of the document
 * -dump -- shows minhash details
 

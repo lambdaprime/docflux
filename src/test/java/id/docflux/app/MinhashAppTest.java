@@ -1,12 +1,15 @@
 package id.docflux.app;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -91,6 +94,20 @@ public class MinhashAppTest {
         out2.forEach(System.out::println);
 
         assertEquals(out1, out2);
+    }
+
+    @Test
+    public void test_max_value() throws Exception {
+        var executor = new BackgroundMinhashAppExecutor();
+        List<String> out = executor.run(new String[] {
+            "-m", "1024", "test"
+        });
+        out.forEach(System.out::println);
+        assertEquals(1, out.size());
+        boolean allLess = Pattern.compile(" ").splitAsStream(out.get(0))
+            .mapToInt(Integer::parseInt)
+            .allMatch(v -> v < 1024);
+        assertTrue(allLess);
     }
 
     private List<String> testSeed(String absolutePath, long s) throws Exception {

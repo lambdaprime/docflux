@@ -18,7 +18,9 @@ import static java.util.stream.Collectors.toSet;
 
 public class Minhash {
     private static final int DEFAULT_LEN = 128;
+    private static final int DEFAULT_MAX = 2147483647;
     private static int NUMPERM = DEFAULT_LEN;
+    private static int PRIME = DEFAULT_MAX;
     private static final int BANDSIZE = 4;
 
     private static Random rand = new Random();
@@ -26,7 +28,6 @@ public class Minhash {
     private static long[] permB = permutations();
 	private static Long seed;
 
-    private static final int PRIME = 1024;//2147483647;
     private static final int MAXHASH = Integer.MAX_VALUE;
 
     private long[] hashvalues;
@@ -130,8 +131,9 @@ public class Minhash {
         permB = permutations();
     }
 
-    public static void init(Optional<Long> seed, Optional<Integer> len) {
+    public static void init(Optional<Long> seed, Optional<Integer> len, Optional<Integer> max) {
         NUMPERM = len.orElse(DEFAULT_LEN);
+        PRIME = max.orElse(DEFAULT_MAX);
         Minhash.seed = seed.orElse(null); 
         rand = seed.isEmpty()? new Random(): new Random(seed.get());
         permA = permutations();
