@@ -58,11 +58,15 @@ Options:
 * --jaccard -- Jaccard similarity measure
 
 ```
-find-similar-file FILE DIR
+find-similar-file [-overlap] [-jaccard] FILE DIR
 ```
 
-Finds files from DIR with m
-highest Jaccard similarity to the query FILE.
+Finds lines from DIR with highest similarity to the query FILE.
+
+Options:
+
+* --overlap -- overlap coefficient similarity measure
+* --jaccard -- Jaccard similarity measure
 
 # Examples
 
@@ -85,4 +89,11 @@ distance --minhash "" "Good morning" "Good evening"
 $
 distance --minhash "-s 123" "Good morning" "Good evening"
 0.24271844660194175
+$
+find-similar-line -overlap "Terra victory day" "datasets/The Variable Man.txt"
+[1.0] “We have lost the war,” Margaret Duffe stated quietly. “But this is not a day of defeat. It is a day of victory. The most incredible victory Terra has ever had.”
+[0.6666666666666666] At eight o’clock in the evening of May 15, 2136, Icarus was launched toward the star Centaurus. A day later, while all Terra waited, Icarus entered the star, traveling at thousands of times the speed of light.
+[0.3333333333333333] “It will end,” Reinhart stated coldly, “as soon as Terra turns out a weapon for which Centaurus can build no defense.”
+[0.3333333333333333] 21-17 on the Centauran side. But a month ago it had been 24-18 in the enemy’s favor. Things were improving, slowly but steadily. Centaurus, older and less virile than Terra, was unable to match Terra’s rate of technocratic advance. Terra was pulling ahead.
+[0.3333333333333333] And then the long, dreary years of inaction between enemies where contact required years of travel, even at nearly the speed of light. The two systems were evenly matched. Screen against screen. Warship against power station. The Centauran Empire surrounded Terra, an iron ring that couldn’t be broken, rusty and corroded as it was. Radical new weapons had to be conceived, if Terra was to break out.
 ```

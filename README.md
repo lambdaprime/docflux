@@ -58,11 +58,15 @@ Options:
 * --jaccard -- Jaccard similarity measure
 
 ```
-find-similar-file FILE DIR
+find-similar-file [-overlap] [-jaccard] FILE DIR
 ```
 
-Finds files from DIR with m
-highest Jaccard similarity to the query FILE.
+Finds lines from DIR with highest similarity to the query FILE.
+
+Options:
+
+* --overlap -- overlap coefficient similarity measure
+* --jaccard -- Jaccard similarity measure
 
 # Examples
 

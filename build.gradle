@@ -20,7 +20,7 @@ test {
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
-String releaseFileName = "docflux-1.zip"
+String releaseFileName = "docflux-2.zip"
 
 jar { 
     manifest { 
