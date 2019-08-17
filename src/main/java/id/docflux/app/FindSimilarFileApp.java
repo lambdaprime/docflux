@@ -2,7 +2,6 @@ package id.docflux.app;
 
 import static java.util.stream.Collectors.toSet;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,14 +17,10 @@ public class FindSimilarFileApp {
     private static PrintStream out = System.out;
 
     private static Set<String> asSet(Path path) {
-        try {
-            return Files.lines(path)
-                    .map(AppUtils::asSet)
-                    .flatMap(Set::stream)
-                    .collect(toSet());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return AppUtils.readAllLines(path)
+                .map(AppUtils::asSet)
+                .flatMap(Set::stream)
+                .collect(toSet());
     }
     
     public static void main(String[] args) throws Exception {

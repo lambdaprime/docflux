@@ -46,6 +46,24 @@ Options:
 
 * --minhash -- turns on minhash mode when distance is calculated not between the input SETs but between their minhashes
 
+```
+find-similar-line [-overlap] [-jaccard] LINE FILE
+```
+
+Finds lines from FILE with highest similarity to the query LINE.
+
+Options:
+
+* --overlap -- overlap coefficient similarity measure
+* --jaccard -- Jaccard similarity measure
+
+```
+find-similar-file FILE DIR
+```
+
+Finds files from DIR with m
+highest Jaccard similarity to the query FILE.
+
 # Examples
 
 ```
