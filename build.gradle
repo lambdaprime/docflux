@@ -46,6 +46,8 @@ task createRelease(type: Copy) {
     into out
     from "$projectDir/src/find-similar-line"
     into out
+    from "$projectDir/src/find-similar-file"
+    into out
 }
 
 task cleanRelease(type: Delete) {

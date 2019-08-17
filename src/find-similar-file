@@ -1,0 +1,3 @@
+DIR=$(readlink -f "$0")
+DIR=$(dirname "$DIR")
+java -cp $DIR/docflux.jar id.docflux.app.FindSimilarFileApp "$@"

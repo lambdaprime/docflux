@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class AppUtils {
 
     private static Pattern pattern = Pattern.compile(" ");
-    
+
     @SuppressWarnings("resource")
     public static void usage(PrintStream out) throws IOException {
         Scanner scanner = new Scanner(DistanceCalculatorApp.class.getResource("/README.md").openStream())
